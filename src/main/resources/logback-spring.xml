@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<springProperty name="SPRING_APPLICATION_NAME" source="spring.application.name" defaultValue="localhost"/>
+	<springProperty name="MAX_HISTORY" source="spring.logback.max.history" defaultValue="3"/>
+	<springProperty name="LOG_HOME_DIR" source="spring.logback.log.dir" defaultValue="/Users/sunce/IdeaProjects/code-maker/logs"/>
+	<springProperty name="INSTANCE_ID" source="spring.cloud.client.ipAddress" defaultValue="127.0.0.1"/>
+	<springProperty name="MSG_LEN" source="log.msg.length" defaultValue="2048"/>
+
+	<property name="LOG_HOME" value="${LOG_HOME_DIR}"/>
+	<property name="LOG_HISTORY_HOME" value="${LOG_HOME}/history"/>
+	<property name="BIZ_LOG" value="%d{HH:mm:ss.SSS} [${INSTANCE_ID},%X{X-B3-SpanId},%X{X-B3-TraceId}] %-5level %-36.36logger{36} %.-${MSG_LEN}msg%n"/>
+	<property name="MON_LOG" value="%d{HH:mm:ss.SSS} [${INSTANCE_ID},%X{X-B3-SpanId},%X{X-B3-TraceId}] %-5level %.-${MSG_LEN}msg%n"/>
+
+	<springProfile name="dev,dev-zf">
+		<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+			<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+				<pattern>${BIZ_LOG}</pattern>
+			</encoder>
+		</appender>
+		<root level="INFO">
+			<appender-ref ref="consoleAppender"/>
+		</root>
+	</springProfile>
+</configuration>
